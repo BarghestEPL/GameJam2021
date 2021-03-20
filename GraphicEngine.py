@@ -7,6 +7,14 @@ class GraphicEngine:
 
     def render(self, data):
         for b_sol in data['pb']['soldiers']:
-            pg.draw.circle(self.win, (0, 0, 255), b_sol['pos'], 30)
+            if b_sol['selected']:
+                pg.draw.circle(self.win, (255, 255, 0), b_sol['pos'], 32)
+                pg.draw.circle(self.win, (0, 0, 255), b_sol['pos'], 30)
+            else:
+                pg.draw.circle(self.win, (0, 0, 255), b_sol['pos'], 30)
         for r_sol in data['pr']['soldiers']:
-            pg.draw.circle(self.win, (255, 0, 0), r_sol['pos'], 30)
+            if r_sol['selected']:
+                pg.draw.circle(self.win, (255, 255, 0), r_sol['pos'], 32)
+                pg.draw.circle(self.win, (255, 0, 0), r_sol['pos'], 30)
+            else:
+                pg.draw.circle(self.win, (255, 0, 0), r_sol['pos'], 30)
