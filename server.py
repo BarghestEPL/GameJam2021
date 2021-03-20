@@ -15,11 +15,12 @@ red_sock, _ = srv.accept()
 playerBlue = Player(blue_sock)
 playerRed = Player(red_sock)
 while True:
-    blue_data = recv_msg(blue_sock)
     playerBlue.update()
+    playerRed.update()
 
     data = {
-        'blue': playerBlue.get_state()
+        "pb": playerBlue.get_state(),
+        "pr": playerRed.get_state()
     }
 
     send_msg(playerRed.sock, data)

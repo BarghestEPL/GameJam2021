@@ -49,8 +49,12 @@ while True:
             pg.quit()
             sys.exit()
 
+    left, mid, right = pg.mouse.get_pressed(3)
     inputs = {
-        "m_pos": pg.mouse.get_pos()
+        "m_pos": pg.mouse.get_pos(),
+        "m_left": left,
+        "m_mid": mid,
+        "m_right": right
     }
     send_msg(srv_sock, inputs)
 
