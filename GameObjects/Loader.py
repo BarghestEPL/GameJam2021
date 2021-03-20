@@ -47,9 +47,11 @@ class Point3D:
 
 
 class Loader:
+    image_path = os.path.join(os.path.dirname(__file__), "sprites/tux.png")
+
     def __init__(self, w, x, y):
         self.pace = 0.01
-        self.image = pg.image.load("/home/barghest/Documents/Github/GameJam2021/GameObjects/sprites/tux.png")
+        self.image = pg.image.load(Loader.image_path)
         self.color = pg.Color(255, 255, 255)
         self.a = Point3D(x - w, y - w, -w)
         self.b = Point3D(x + w, y - w, -w)
