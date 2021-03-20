@@ -9,22 +9,24 @@ class GraphicEngine:
         self.gun_width = 5
         self.gun_length = 30
 
+    def render_soldier(self, soldier, color):
+        cx, cy = (self.selected_circle_radius, self.selected_circle_radius)
+        soldier_surface = pg.Surface((self.selected_circle_radius*2+1, self.selected_circle_radius*2+1))
+        
+        x, y = soldier["pos"]
+        if soldier["selected"]:
+            pg.draw.circle(soldier_surface, (255, 255, 0), (cx, cy), self.selected_circle_radius)
+        pg.draw.circle(soldier_surface, color, (cx, cy), self.circle_radius)
+        pg.draw.rect(soldier_surface, (0, 255, 0), pg.Rect(2*self.selected_circle_radius - self.gun_width, 0, self.gun_width, self.gun_length))
+        soldier_surface = pg.transform.rotate(soldier_surface, soldier["ang"])
+        self.win.blit(soldier_surface, (x, y))
+
     def render(self, data):
         for soldier in data['pb']['soldiers']:
-            x, y = soldier["pos"]
-            if soldier["selected"]:
-                pg.draw.circle(self.win, (255, 255, 0), (x, y), self.selected_circle_radius)
-            pg.draw.circle(self.win, (0, 0, 255), (x, y), self.circle_radius)
-            
-            pg.draw.rect(self.win, (0, 255, 0), pg.Rect(x+self.circle_radius - self.gun_width/2, y - self.gun_length, self.gun_width, self.gun_length))
+            self.render_soldier(soldier, (0, 0, 255))
 
         for soldier in data['pr']['soldiers']:
-            x, y = soldier["pos"]
-            if soldier["selected"]:
-                pg.draw.circle(self.win, (255, 255, 0), (x, y), self.selected_circle_radius)
-            pg.draw.circle(self.win, (255, 0, 0), (x, y), self.circle_radius)
-            
-            pg.draw.rect(self.win, (0, 255, 0), pg.Rect(x+self.circle_radius - self.gun_width/2, y - self.gun_length, self.gun_width, self.gun_length))
+            self.render_soldier(soldier, (255, 0, 0))
 
 
 
@@ -41,8 +43,8 @@ if __name__ == "__main__":
 
     GE = GraphicEngine(screen)
 
-    data = {'pr': {"soldiers": [{"pos": (100, 100), "selected": True}]},
-            'pb': {"soldiers": [{"pos": (200, 200), "selected": False}]}}
+    data = {'pr': {"soldiers": [{"pos": (100, 100), "selected": True, "ang": 20}]},
+            'pb': {"soldiers": [{"pos": (200, 200), "selected": False, "ang": 270}]}}
 
     while True:
         for event in pg.event.get():
