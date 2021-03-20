@@ -16,7 +16,7 @@ class GraphicEngine:
         if soldier["selected"]:
             pg.draw.circle(soldier_surface, (255, 255, 0), (cx, cy), self.selected_circle_radius)
         pg.draw.circle(soldier_surface, color, (cx, cy), self.circle_radius)
-        pg.draw.rect(soldier_surface, (0, 255, 0), pg.Rect(cx - self.gun_width/2, cy-self.gun_length, self.gun_width, self.gun_length))
+        pg.draw.rect(soldier_surface, (0, 0, 0), pg.Rect(cx - self.gun_width/2, cy-self.gun_length, self.gun_width, self.gun_length))
         soldier_surface = pg.transform.rotate(soldier_surface, soldier["ang"])
         self.win.blit(soldier_surface, (x, y))
 
