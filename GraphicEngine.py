@@ -10,7 +10,7 @@ class GraphicEngine:
 
     def render_soldier(self, soldier, color):
         cx, cy = (self.selected_circle_radius*2, self.selected_circle_radius*2)
-        soldier_surface = pg.Surface((self.selected_circle_radius*4+1, self.selected_circle_radius*4+1))
+        soldier_surface = pg.Surface((self.selected_circle_radius*4+1, self.selected_circle_radius*4+1), pg.SRCALPHA, 32)
         
         x, y = soldier["pos"]
         if soldier["selected"]:
@@ -37,6 +37,8 @@ if __name__ == "__main__":
     pg.display.set_caption('Louvain-li-Nux 2021')
     font = pg.font.SysFont("comicsansms", 24)
     screen = pg.display.set_mode((width, height))
+
+    screen.fill([255, 255, 255])
 
     GE = GraphicEngine(screen)
 
