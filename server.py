@@ -1,10 +1,9 @@
 import time
 import socket
-import threading
 from proto import *
 
 HP = HOST, PORT = "", 45632
-srv = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 srv.bind(HP)
 srv.listen(5)
 
