@@ -35,13 +35,13 @@ class Player:
 class Soldier(pg.sprite.Sprite):
     def __init__(self, pos: pg.Vector2):
         pg.sprite.Sprite.__init__(self)
-        self.rad = 20
+        self.rad = 30
         self.pos = pos
         self.angle = 0
         self.health = 100
         self.speed = 0.5
-        self.move_at = self.pos
-        self.vel = 0
+        self.m_at = self.pos
+        self.step = pg.Vector2(0, 0)
 
     def is_target(self, center):
         return self.pos.distance_to(center) < self.rad
@@ -50,13 +50,13 @@ class Soldier(pg.sprite.Sprite):
         self.angle = self.pos.angle_to(center)
 
     def move_to(self, data):
-        self.move_at = data['pos']
-        self.vel = pg.Vector2(1, 0).rotate(radians(self.pos.angle_to(data['pos'])))
+        self.m_at = pg.Vector2(data['pos'])
+        self.step = pg.Vector2((self.m_at.x - self.pos.x) / 60, (self.m_at.y - self.pos.y) / 60)
 
     def update(self):
         # moving
-        if self.pos.distance_to(self.move_at) > 1:
-            self.pos += self.vel
+        if self.pos.distance_to(self.m_at) > 1:
+            self.pos += self.step
 
     def get_state(self):
         return {
