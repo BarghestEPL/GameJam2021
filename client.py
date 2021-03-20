@@ -21,8 +21,8 @@ screen = pg.display.set_mode((width, height))
 
 # MULTIPLAYER
 
-HOST, PORT = "2a02:2788:1a4:552:a64c:6dae:e8c2:412e", 45632
-srv_sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+HOST, PORT = "109.88.29.134", 45632
+srv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
     srv_sock.connect((HOST, PORT))
