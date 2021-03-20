@@ -10,7 +10,7 @@ from GameObjects.Loader import Loader
 
 fps = 60
 dt = 1 / fps
-width, height = 800, 600
+width, height = 1280, 800
 
 # Set up the window.
 pg.init()
@@ -19,10 +19,9 @@ pg.display.set_caption('Louvain-li-Nux 2021')
 font = pg.font.SysFont("comicsansms", 24)
 screen = pg.display.set_mode((width, height))
 
-
 # MULTIPLAYER
 ge = GraphicEngine(screen)
-HOST, PORT = "109.88.29.134", 45632
+HOST, PORT = "localhost", 45632
 srv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
@@ -40,6 +39,7 @@ def handle_srv():
             ge.render(data)
             text = font.render(str(int(clock.get_fps())), True, (255, 255, 25))
             screen.blit(text, (10, 10))
+            pg.display.flip()
 
 
 threading.Thread(target=handle_srv, daemon=True).start()
@@ -56,6 +56,4 @@ while True:
         "right": right
     }
     send_msg(srv_sock, inputs)
-
-    pg.display.flip()
     dt = clock.tick(fps)

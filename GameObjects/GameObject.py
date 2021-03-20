@@ -1,6 +1,6 @@
 import pygame as pg
 from proto import *
-from math import cos, sin, radians
+from math import atan, pi
 
 
 class Player:
@@ -15,7 +15,7 @@ class Player:
         self.target = self.soldiers[1]
         self.target.selected = True
 
-    def update(self):
+    def update(self, dt):
         data = recv_msg(self.sock)
         if data is not None:
             if data["left"]:
@@ -29,20 +29,19 @@ class Player:
                     self.target.move_to(data)
             self.target.aim(data['pos'])
             for soldier in self.soldiers:
-                soldier.update()
+                soldier.update(dt)
 
     def get_state(self):
         return {"soldiers": [soldier.get_state() for soldier in self.soldiers]}
 
 
-class Soldier(pg.sprite.Sprite):
+class Soldier:
     def __init__(self, pos: pg.Vector2):
-        pg.sprite.Sprite.__init__(self)
         self.rad = 30
         self.pos = pos
         self.angle = 0
         self.health = 100
-        self.speed = 0.5
+        self.speed = 200
         self.m_at = self.pos
         self.selected = False
         self.step = pg.Vector2(0, 0)
@@ -51,16 +50,16 @@ class Soldier(pg.sprite.Sprite):
         return self.pos.distance_to(center) < self.rad
 
     def aim(self, center):
-        self.angle = self.pos.angle_to(center)
+        self.angle = atan((self.pos.x - center[0]) / (self.pos.y - center[1])) * 180 / pi
 
     def move_to(self, data):
         self.m_at = pg.Vector2(data['pos'])
-        self.step = pg.Vector2((self.m_at.x - self.pos.x) / 60, (self.m_at.y - self.pos.y) / 60)
+        self.step = (self.m_at - self.pos).normalize() * self.speed
 
-    def update(self):
+    def update(self, dt):
         # moving
-        if self.pos.distance_to(self.m_at) > 1:
-            self.pos += self.step
+        if self.pos.distance_to(self.m_at) > 5:
+            self.pos = self.pos + self.step * dt
 
     def get_state(self):
         return {

@@ -25,12 +25,12 @@ playerRed = Player(red_sock)
 
 def run():
     while True:
-        playerBlue.update()
+        playerBlue.update(dt)
 
 
 threading.Thread(target=run, daemon=True).start()
 while True:
-    playerRed.update()
+    playerRed.update(dt)
 
     data = {
         "pb": playerBlue.get_state(),
