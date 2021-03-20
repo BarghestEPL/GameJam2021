@@ -5,10 +5,13 @@ def recv_msg(sock, h=64, f="utf-8"):
     try:
         msg_len = int(sock.recv(h).decode(f))
         data = sock.recv(msg_len).decode(f)
+        print(data)
         return json.loads(data)
     except OSError:
+        print("oserror")
         return None
     except ValueError:
+        print("valuerorr")
         return None
 
 

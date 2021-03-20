@@ -5,6 +5,7 @@ from time import time
 import threading
 
 from proto import *
+from GraphicEngine import GraphicEngine
 from GameObjects.Loader import Loader
 
 fps = 60
@@ -20,7 +21,7 @@ screen = pg.display.set_mode((width, height))
 
 
 # MULTIPLAYER
-
+ge = GraphicEngine(screen)
 HOST, PORT = "109.88.29.134", 45632
 srv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -34,9 +35,11 @@ except ConnectionRefusedError as error:
 def handle_srv():
     while True:
         data = recv_msg(srv_sock)
-        if data is None:
-            break
-        print(data)
+        if data is not None:
+            screen.fill((0, 0, 0))
+            ge.render(data)
+            text = font.render(str(int(clock.get_fps())), True, (255, 255, 25))
+            screen.blit(text, (10, 10))
 
 
 threading.Thread(target=handle_srv, daemon=True).start()
@@ -50,12 +53,6 @@ while True:
         "m_pos": pg.mouse.get_pos()
     }
     send_msg(srv_sock, inputs)
-
-
-    # draws
-    screen.fill((0, 0, 0))
-    text = font.render(str(int(clock.get_fps())), True, (255, 255, 25))
-    screen.blit(text, (10, 10))
 
     pg.display.flip()
     dt = clock.tick(fps)
