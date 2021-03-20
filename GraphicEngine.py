@@ -6,4 +6,7 @@ class GraphicEngine:
         self.win = win
 
     def render(self, data):
-        pass
+        for b_sol in data['pb']['soldiers']:
+            pg.draw.circle(self.win, (0, 0, 255), b_sol['pos'], 20)
+        for r_sol in data['pr']['soldiers']:
+            pg.draw.circle(self.win, (255, 0, 0), r_sol['pos'], 20)
