@@ -3,6 +3,7 @@ import socket
 from proto import *
 import pygame as pg
 from GameObjects.GameObject import *
+import threading
 
 HP = HOST, PORT = "", 45632
 srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -17,10 +18,18 @@ print("blue is connected")
 red_sock, _ = srv.accept()
 print("red is connected")
 
+
 playerBlue = Player(blue_sock)
 playerRed = Player(red_sock)
+
+
+def run():
+    while True:
+        playerBlue.update()
+
+
+threading.Thread(target=run, daemon=True).start()
 while True:
-    playerBlue.update()
     playerRed.update()
 
     data = {

@@ -13,6 +13,7 @@ class Player:
         ]
 
         self.target = self.soldiers[1]
+        self.target.selected = True
 
     def update(self):
         data = recv_msg(self.sock)
@@ -20,7 +21,9 @@ class Player:
             if data["left"]:
                 for soldier in self.soldiers:
                     if soldier.is_target(data["pos"]):
+                        self.target.selected = False
                         self.target = soldier
+                        soldier.selected = True
                         break
                 else:
                     self.target.move_to(data)
@@ -41,6 +44,7 @@ class Soldier(pg.sprite.Sprite):
         self.health = 100
         self.speed = 0.5
         self.m_at = self.pos
+        self.selected = False
         self.step = pg.Vector2(0, 0)
 
     def is_target(self, center):
@@ -62,5 +66,6 @@ class Soldier(pg.sprite.Sprite):
         return {
             "pos": tuple(self.pos),
             "ang": self.angle,
-            "health": self.health
+            "health": self.health,
+            "selected": self.selected
         }
