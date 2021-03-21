@@ -69,10 +69,10 @@ class GraphicEngine:
 
 
         for soldier in data['pb']['soldiers']:
-            self.render_soldier(soldier, BLUE_COLOR)
+            self.render_soldier(soldier, BLUE_COLOR if not soldier['dead'] else DEAD_COLOR)
 
         for soldier in data['pr']['soldiers']:
-            self.render_soldier(soldier, RED_COLOR)
+            self.render_soldier(soldier, RED_COLOR if not soldier['dead'] else DEAD_COLOR)
 
         if "bu" in data: 
             for bullet in data['bu']:
