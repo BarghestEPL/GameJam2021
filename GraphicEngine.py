@@ -9,7 +9,6 @@ class GraphicEngine:
         self.selected_circle_radius = 32
         self.gun_width = 5
         self.gun_length = 40
-        self.tile_size = 64
 
     def render_soldier(self, soldier, color):
         cx, cy = (self.selected_circle_radius*2, self.selected_circle_radius*2)
@@ -62,7 +61,7 @@ class GraphicEngine:
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         ])
 
-        tile_size = 64
+        tile_size = 32
         tile_surface = pg.Surface((tile_size, tile_size))
         for i in range(len(arena)):
             for j in range(len(arena[0])):
