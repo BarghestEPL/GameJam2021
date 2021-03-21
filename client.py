@@ -21,7 +21,7 @@ screen = pg.display.set_mode((width, height))
 
 # MULTIPLAYER
 ge = GraphicEngine(screen)
-HOST, PORT = "localhost", 45632
+HOST, PORT = "localhost", 45800
 srv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
@@ -42,6 +42,7 @@ def handle_srv():
             pg.display.flip()
 
 
+test = 3
 threading.Thread(target=handle_srv, daemon=True).start()
 while True:
     for event in pg.event.get():
@@ -55,5 +56,9 @@ while True:
         "left": left,
         "right": right
     }
-    send_msg(srv_sock, inputs)
+    test = 3 if send_msg(srv_sock, inputs) else test - 1
+    if test == 0:
+        break
     dt = clock.tick(fps)
+
+srv_sock.close()
