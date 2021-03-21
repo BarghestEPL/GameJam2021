@@ -14,6 +14,7 @@ DEAD_COLOR = "#adb5bd"
 RED_FONT_COLOR = RED_COLOR
 GUN_COLOR = "#000000"
 SELECTED_COLOR = "#00ff00"
+COUNTING_COLOR = "#000000"
 TILES_COLOR = [
             "#7f5539", # Background
             "#495057", # Walls

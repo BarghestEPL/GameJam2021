@@ -76,6 +76,7 @@ class Soldier:
         self.reload_timer = RELOAD_TIME
         self.alive = RESPAWN_TIME
         self.dead = False
+        self.counting = False
         self.step = pg.Vector2(0, 0)
 
     def is_target(self, center):
@@ -87,7 +88,7 @@ class Soldier:
         self.step = diff.normalize() * self.speed
 
     def can_shoot(self):
-        return self.reload_timer > RELOAD_TIME and not self.dead
+        return self.reload_timer > RELOAD_TIME and not self.dead and not self.counting
 
     def update(self, dt):
         if self.alive > RESPAWN_TIME:
@@ -97,6 +98,11 @@ class Soldier:
                 if bloc[int(tmp.y / 32), int(tmp.x / 32)] != 1:
                     self.pos = tmp
                     self.aim = self.aim + self.step*dt
+                
+                if bloc[int(tmp.y / 32), int(tmp.x / 32)] == 2 and self.color == "blue":
+                    self.counting = True
+                else:
+                    self.counting = False
 
             for bullet in Bullet.bullets:
                 if bullet.collide(self.pos) and bullet.color != self.color:
@@ -113,6 +119,7 @@ class Soldier:
             "pos": tuple(self.pos),
             "aim": tuple(self.aim),
             "dead": self.dead,
+            "counting": self.counting,
             "selected": self.selected
         }
 

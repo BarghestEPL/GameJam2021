@@ -44,7 +44,8 @@ class GraphicEngine:
         pg.draw.circle(self.win, color, pos, self.rad)
 
         aim = pg.Vector2(soldier["aim"])
-        pg.draw.line(self.win, GUN_COLOR, pos, aim, self.gun_width)
+        if not soldier["counting"]:
+            pg.draw.line(self.win, GUN_COLOR, pos, aim, self.gun_width)
 
     def load_arena(self):
         tile_size = TILE_SIZE
@@ -58,7 +59,12 @@ class GraphicEngine:
         self.win.fill(TILES_COLOR[0])
         self.load_arena()
         font = pg.font.SysFont("comicsansms", 24)
-        
+       
+        score_counting = font.render(str(int(data["score_counting"])), False, COUNTING_COLOR)
+        score_counting = pg.transform.scale(score_counting, (5*TILE_SIZE, 5*TILE_SIZE))
+        self.win.blit(score_counting, (7*TILE_SIZE, 13*TILE_SIZE))
+
+
         score_blue = font.render(str(data["pr"]["nb_killed"]), False, BLUE_FONT_COLOR)
         score_blue = pg.transform.scale(score_blue, (3*TILE_SIZE, 3*TILE_SIZE))
         self.win.blit(score_blue,(WIDTH - 5*TILE_SIZE, 2*TILE_SIZE))

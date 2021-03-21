@@ -30,16 +30,21 @@ def run():
 
 test_blue = 3
 test_red = 3
+score_counting = 0
+
 threading.Thread(target=run, daemon=True).start()
 while True:
     playerRed.update(dt)
     for bullet in Bullet.bullets:
         bullet.update(dt)
 
+    score_counting += sum([soldier.counting for soldier in playerBlue.soldiers])*dt
+
     data = {
         "pb": playerBlue.get_state(),
         "pr": playerRed.get_state(),
-        "bu": [bullet.get_state() for bullet in Bullet.bullets]
+        "bu": [bullet.get_state() for bullet in Bullet.bullets],
+        "score_counting": score_counting
     }
 
     test_blue = 3 if send_msg(playerRed.sock, data) else test_blue - 1
