@@ -71,3 +71,9 @@ class GraphicEngine:
 
         for soldier in data['pr']['soldiers']:
             self.render_soldier(soldier, (255, 0, 0))
+
+        for bullet in data['bu']:
+            if bullet['color']:
+                pg.draw.circle(self.win, (0, 0, 255), bullet['pos'], 10)
+            else:
+                pg.draw.circle(self.win, (255, 0, 0), bullet['pos'], 10)

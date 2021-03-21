@@ -21,7 +21,7 @@ screen = pg.display.set_mode((width, height))
 
 # MULTIPLAYER
 ge = GraphicEngine(screen)
-HOST, PORT = "localhost", 45800
+HOST, PORT = "localhost", 45759
 srv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
@@ -45,12 +45,14 @@ def handle_srv():
 test = 3
 threading.Thread(target=handle_srv, daemon=True).start()
 while True:
+    left, _, right = False, False, False
     for event in pg.event.get():
         if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
+        if event.type == pg.MOUSEBUTTONDOWN:
+            left, _, right = pg.mouse.get_pressed(3)
 
-    left, _, right = pg.mouse.get_pressed(3)
     inputs = {
         "pos": pg.mouse.get_pos(),
         "left": left,

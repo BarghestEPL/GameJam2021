@@ -5,7 +5,7 @@ import pygame as pg
 from GameObjects.GameObject import *
 import threading
 
-HP = HOST, PORT = "", 45800
+HP = HOST, PORT = "", 45759
 srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 srv.bind(HP)
 srv.listen(5)
@@ -33,9 +33,13 @@ test_red = 3
 threading.Thread(target=run, daemon=True).start()
 while True:
     playerRed.update(dt)
+    for bullet in Bullet.bullets:
+        bullet.update(dt)
+
     data = {
         "pb": playerBlue.get_state(),
-        "pr": playerRed.get_state()
+        "pr": playerRed.get_state(),
+        "bu": [bullet.get_state() for bullet in Bullet.bullets]
     }
 
     test_blue = 3 if send_msg(playerRed.sock, data) else test_blue - 1
