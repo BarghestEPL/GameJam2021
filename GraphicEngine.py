@@ -2,43 +2,60 @@ import pygame as pg
 import numpy as np
 
 
+arena = np.array([
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+[1, 3, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 4, 4, 4, 4, 1],
+[1, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 1],
+[1, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 1],
+[1, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 1],
+[1, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 1],
+[1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 1],
+[1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 1],
+[1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 2, 2, 2, 1],
+[1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+])
+
+
 class GraphicEngine:
     def __init__(self, win):
         self.win = win
-        self.circle_radius = 30
-        self.selected_circle_radius = 32
-        self.gun_width = 5
-        self.gun_length = 40
+        self.rad = 30
+        self.gun_w = 5
+        self.tile_size = 32
+        self.colors = [
+            "#7f5539",  # Background
+            "#495057",  # Walls
+            "#fcf6bd",  # Vote counts
+            "#f94144",  # Red spawn
+            "#48bfe3",  # Blue spawn
+        ]
 
     def render_soldier(self, soldier, color):
-        cx, cy = (self.selected_circle_radius*2, self.selected_circle_radius*2)
-        soldier_surface = pg.Surface((self.selected_circle_radius*4+1, self.selected_circle_radius*4+1), pg.SRCALPHA, 32)
-        
-        x, y = soldier["pos"]
+        pos= pg.Vector2(soldier["pos"])
         if soldier["selected"]:
-            pg.draw.circle(soldier_surface, (255, 255, 0), (cx, cy), self.selected_circle_radius)
-        pg.draw.circle(soldier_surface, color, (cx, cy), self.circle_radius)
-        pg.draw.rect(soldier_surface, (0, 0, 0), pg.Rect(cx - self.gun_width/2, cy-self.gun_length, self.gun_width, self.gun_length))
+            pg.draw.circle(self.win, (255, 255, 0), pos, self.rad + 2)
+        pg.draw.circle(self.win, color, pos, self.rad)
 
-        soldier_surface = pg.transform.rotate(soldier_surface, soldier["ang"])
-
-        self.win.blit(soldier_surface, (x, y))
-
-    def render(self, data):
-        background_color = "#7f5539"
-        self.win.fill(background_color)
-
-        self.load_arena()
-
-
-        for soldier in data['pb']['soldiers']:
-            self.render_soldier(soldier, (0, 0, 255))
-
-        for soldier in data['pr']['soldiers']:
-            self.render_soldier(soldier, (255, 0, 0))
+        aim = pg.Vector2(soldier["aim"])
+        c = pos - (pos - aim).normalize() * (self.rad + self.gun_w)
+        pg.draw.line(self.win, (0, 0, 0), pos, c, 8)
 
     def load_arena(self):
-
         color_tiles = [
                     "#7f5539", # Background
                     "#495057", # Walls
@@ -46,27 +63,31 @@ class GraphicEngine:
                     "#f94144", # Red spawn
                     "#48bfe3", # Blue spawn
                 ]
-        arena = np.array([
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 4, 4, 4, 4, 1, 0, 0, 2, 2, 2, 2, 0, 0, 1, 4, 4, 4, 4, 1],
-            [1, 4, 4, 4, 4, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 4, 4, 4, 4, 1],
-            [1, 4, 4, 4, 4, 1, 0, 0, 2, 2, 2, 2, 0, 0, 1, 4, 4, 4, 4, 1],
-            [1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1],
-            [1, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 3, 1],
-            [1, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 1],
-            [1, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 3, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        ])
-
         tile_size = 32
         tile_surface = pg.Surface((tile_size, tile_size))
         for i in range(len(arena)):
             for j in range(len(arena[0])):
                 tile_surface.fill(color_tiles[arena[i][j]])
                 self.win.blit(tile_surface, (j*tile_size, i*tile_size)) 
+
+    def render(self, data):
+        background_color = "#7f5539"
+        self.win.fill(background_color)
+
+        self.load_arena()
+
+        for soldier in data['pb']['soldiers']:
+            self.render_soldier(soldier, (0, 0, 255))
+
+        for soldier in data['pr']['soldiers']:
+            self.render_soldier(soldier, (255, 0, 0))
+
+        if "bu" in data: 
+            for bullet in data['bu']:
+                if bullet['color']:
+                    pg.draw.circle(self.win, (0, 0, 255), bullet['pos'], 10)
+                else:
+                    pg.draw.circle(self.win, (255, 0, 0), bullet['pos'], 10)
 
 if __name__ == "__main__":
     fps = 60
@@ -82,8 +103,8 @@ if __name__ == "__main__":
 
     GE = GraphicEngine(screen)
 
-    data = {'pr': {"soldiers": [{"pos": (100, 100), "selected": True, "ang": 90}]},
-            'pb': {"soldiers": [{"pos": (200, 200), "selected": False, "ang": 270}]}}
+    data = {'pr': {"soldiers": [{"pos": (100, 100), "selected": True, "aim": 90}]},
+            'pb': {"soldiers": [{"pos": (200, 200), "selected": False, "aim": 270}]}}
 
     while True:
         for event in pg.event.get():
