@@ -1,3 +1,4 @@
+SERVER_IP = "localhost"
 
 TILE_SIZE = 32
 WIDTH = 1280
