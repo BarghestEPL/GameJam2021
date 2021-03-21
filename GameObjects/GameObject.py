@@ -145,6 +145,25 @@ class Player:
         self.target = self.soldiers[1]
         self.target.selected = True
 
+    def reset(self, color):
+        self.color = color
+
+        if self.color == "red":
+            self.soldiers = [
+                Soldier(self.color, pg.Vector2(100, 700), pg.Vector2(75, 75)),
+                Soldier(self.color, pg.Vector2(200, 380), pg.Vector2(75, 150)),
+                Soldier(self.color, pg.Vector2(150, 150), pg.Vector2(150, 75)),
+            ]
+        else:
+            self.soldiers = [
+                Soldier(self.color, pg.Vector2(1180, 700), pg.Vector2(WIDTH-75, 75)),
+                Soldier(self.color, pg.Vector2(1000, 380), pg.Vector2(WIDTH-75, 150)),
+                Soldier(self.color, pg.Vector2(1130, 150), pg.Vector2(WIDTH-150, 75))
+            ]
+
+        self.target = self.soldiers[1]
+        self.target.selected = True
+
     def update(self, dt):
         data = recv_msg(self.sock)
         if data is not None:
