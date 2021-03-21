@@ -110,7 +110,7 @@ class GraphicEngine:
             s = font.render("GAME %c STARTING" % game_nb, False, TIME_COLOR)
             self.win.blit(s, (5*TILE_SIZE, int(HEIGHT/2)-2*TILE_SIZE))
             
-            s = font.render("YOU PLAY %s" % data["color"], False, TIME_COLOR)
+            s = font.render("GOOD LUCK!", False, TIME_COLOR)
             self.win.blit(s, (5*TILE_SIZE, int(HEIGHT/2)+1*TILE_SIZE))
 
         elif data["state"] == "final":
