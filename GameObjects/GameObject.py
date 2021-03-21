@@ -1,6 +1,7 @@
 import pygame as pg
 from proto import *
 from math import floor
+from const import *
 import numpy as np
 
 
@@ -37,8 +38,8 @@ class Bullet:
     bullets = []
 
     def __init__(self, pos, aim, color):
-        self.rad = 10
         self.color = color
+        self.rad = BULLET_RAD
         self.step = (aim - pos + pg.Vector2(0.001, 0.001)).normalize() * 500
         self.pos = pos + self.step * 0.2
         Bullet.bullets.append(self)
@@ -61,13 +62,14 @@ class Bullet:
 
 
 class Soldier:
-    def __init__(self, initial_pos: pg.Vector2, respawn_pos: pg.Vector2):
-        self.aim = (0, 0)
-        self.rad = 30
+    def __init__(self, first, initial_pos: pg.Vector2, respawn_pos: pg.Vector2):
+        print(first)
+        self.aim = initial_pos + ((SOLDIER_RAD+GUN_WIDTH) * (1 if first else -1), 0)
+        self.rad = SOLDIER_RAD
         self.pos = initial_pos
         self.respawn_pos = respawn_pos
         self.angle = 0
-        self.speed = 200
+        self.speed = SOLDIER_SPEED
         self.m_at = self.pos
         self.selected = False
         self.reload_timer = 666
@@ -91,6 +93,7 @@ class Soldier:
                 tmp = self.pos + self.step * dt
                 if bloc[int(tmp.y / 32), int(tmp.x / 32)] != 1:
                     self.pos = tmp
+                    self.aim = self.aim + self.step*dt
 
             for bullet in Bullet.bullets:
                 if bullet.collide(self.pos):
@@ -102,7 +105,7 @@ class Soldier:
     def get_state(self):
         return {
             "pos": tuple(self.pos),
-            "aim": self.aim,
+            "aim": tuple(self.aim),
             "selected": self.selected
         }
 
@@ -113,15 +116,15 @@ class Player:
         self.first = first
         if first:
             self.soldiers = [
-                Soldier(pg.Vector2(100, 700), pg.Vector2(75, 75)),
-                Soldier(pg.Vector2(200, 380), pg.Vector2(75, 150)),
-                Soldier(pg.Vector2(150, 150), pg.Vector2(150, 75)),
+                Soldier(first, pg.Vector2(100, 700), pg.Vector2(75, 75)),
+                Soldier(first, pg.Vector2(200, 380), pg.Vector2(75, 150)),
+                Soldier(first, pg.Vector2(150, 150), pg.Vector2(150, 75)),
             ]
         else:
             self.soldiers = [
-                Soldier(pg.Vector2(1180, 700), pg.Vector2(1280-75, 75)),
-                Soldier(pg.Vector2(1000, 380), pg.Vector2(1280-75, 150)),
-                Soldier(pg.Vector2(1130, 150), pg.Vector2(1280-150, 75))
+                Soldier(first, pg.Vector2(1180, 700), pg.Vector2(1280-75, 75)),
+                Soldier(first, pg.Vector2(1000, 380), pg.Vector2(1280-75, 150)),
+                Soldier(first, pg.Vector2(1130, 150), pg.Vector2(1280-150, 75))
             ]
 
         self.target = self.soldiers[1]
@@ -131,6 +134,8 @@ class Player:
         data = recv_msg(self.sock)
         if data is not None:
             self.target.aim = data['pos']
+
+            self.target.aim =  tuple(self.target.pos - (self.target.pos - data["pos"]).normalize() * (self.target.rad + GUN_WIDTH))
             for soldier in self.soldiers:
                 soldier.update(dt, self.first)
 

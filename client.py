@@ -3,6 +3,8 @@ import socket
 import pygame as pg
 from time import time
 import threading
+from const import *
+
 
 from proto import *
 from GraphicEngine import GraphicEngine
@@ -10,14 +12,14 @@ from GameObjects.Loader import Loader
 
 fps = 60
 dt = 1 / fps
-width, height = 1280, 800
+
 
 # Set up the window.
 pg.init()
 clock = pg.time.Clock()
 pg.display.set_caption('Louvain-li-Nux 2021')
 font = pg.font.SysFont("comicsansms", 24)
-screen = pg.display.set_mode((width, height))
+screen = pg.display.set_mode((WIDTH, HEIGHT))
 
 # MULTIPLAYER
 ge = GraphicEngine(screen)
