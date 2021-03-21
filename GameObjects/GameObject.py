@@ -62,13 +62,14 @@ class Bullet:
 
 
 class Soldier:
-    def __init__(self, first, initial_pos: pg.Vector2, respawn_pos: pg.Vector2):
-        print(first)
-        self.aim = initial_pos + ((SOLDIER_RAD+GUN_WIDTH) * (1 if first else -1), 0)
+    def __init__(self, color, initial_pos: pg.Vector2, respawn_pos: pg.Vector2):
+        self.color = color
+        self.aim = initial_pos + ((SOLDIER_RAD+GUN_WIDTH) * (1 if color == "red" else -1), 0)
         self.rad = SOLDIER_RAD
         self.pos = initial_pos
         self.respawn_pos = respawn_pos
         self.angle = 0
+        self.nb_killed = 0
         self.speed = SOLDIER_SPEED
         self.m_at = self.pos
         self.selected = False
@@ -87,7 +88,7 @@ class Soldier:
     def can_shoot(self):
         return self.reload_timer > 666
 
-    def update(self, dt, first):
+    def update(self, dt):
         if self.alive > 666:
             if self.pos.distance_to(self.m_at) > 5:
                 tmp = self.pos + self.step * dt
@@ -96,9 +97,11 @@ class Soldier:
                     self.aim = self.aim + self.step*dt
 
             for bullet in Bullet.bullets:
-                if bullet.collide(self.pos):
+                if bullet.collide(self.pos) and bullet.color != self.color:
                     self.alive = 0
+                    self.nb_killed += 1
                     self.pos = self.respawn_pos
+                    self.aim = self.respawn_pos + ((SOLDIER_RAD+GUN_WIDTH) * (1 if self.color == "red" else -1), 0)
         self.reload_timer += dt
         self.alive += dt
 
@@ -113,18 +116,22 @@ class Soldier:
 class Player:
     def __init__(self, sock, first):
         self.sock = sock
-        self.first = first
         if first:
+            self.color = "red"
+        else:
+            self.color = "blue"
+
+        if self.color == "red":
             self.soldiers = [
-                Soldier(first, pg.Vector2(100, 700), pg.Vector2(75, 75)),
-                Soldier(first, pg.Vector2(200, 380), pg.Vector2(75, 150)),
-                Soldier(first, pg.Vector2(150, 150), pg.Vector2(150, 75)),
+                Soldier(self.color, pg.Vector2(100, 700), pg.Vector2(75, 75)),
+                Soldier(self.color, pg.Vector2(200, 380), pg.Vector2(75, 150)),
+                Soldier(self.color, pg.Vector2(150, 150), pg.Vector2(150, 75)),
             ]
         else:
             self.soldiers = [
-                Soldier(first, pg.Vector2(1180, 700), pg.Vector2(1280-75, 75)),
-                Soldier(first, pg.Vector2(1000, 380), pg.Vector2(1280-75, 150)),
-                Soldier(first, pg.Vector2(1130, 150), pg.Vector2(1280-150, 75))
+                Soldier(self.color, pg.Vector2(1180, 700), pg.Vector2(WIDTH-75, 75)),
+                Soldier(self.color, pg.Vector2(1000, 380), pg.Vector2(WIDTH-75, 150)),
+                Soldier(self.color, pg.Vector2(1130, 150), pg.Vector2(WIDTH-150, 75))
             ]
 
         self.target = self.soldiers[1]
@@ -137,7 +144,7 @@ class Player:
 
             self.target.aim =  tuple(self.target.pos - (self.target.pos - data["pos"]).normalize() * (self.target.rad + GUN_WIDTH))
             for soldier in self.soldiers:
-                soldier.update(dt, self.first)
+                soldier.update(dt)
 
             if data["left"]:
                 for soldier in self.soldiers:
@@ -150,9 +157,9 @@ class Player:
                     self.target.move_to(data)
 
             if data["right"] and self.target.can_shoot():
-                Bullet(self.target.pos, data["pos"], self.first)
+                Bullet(self.target.pos, data["pos"], self.color)
 
     def get_state(self):
         return {
-            "soldiers": [soldier.get_state() for soldier in self.soldiers],
+                "soldiers": [soldier.get_state() for soldier in self.soldiers], "nb_killed": sum([soldier.nb_killed for soldier in self.soldiers]),
         }

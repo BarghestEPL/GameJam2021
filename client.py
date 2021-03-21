@@ -21,6 +21,7 @@ pg.display.set_caption('Louvain-li-Nux 2021')
 font = pg.font.SysFont("comicsansms", 24)
 screen = pg.display.set_mode((WIDTH, HEIGHT))
 
+
 # MULTIPLAYER
 ge = GraphicEngine(screen)
 HOST, PORT = "localhost", 45759

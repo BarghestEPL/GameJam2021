@@ -57,6 +57,16 @@ class GraphicEngine:
     def render(self, data):
         self.win.fill(TILES_COLOR[0])
         self.load_arena()
+        font = pg.font.SysFont("comicsansms", 24)
+        
+        score_blue = font.render(str(data["pr"]["nb_killed"]), False, BLUE_FONT_COLOR)
+        score_blue = pg.transform.scale(score_blue, (3*TILE_SIZE, 3*TILE_SIZE))
+        self.win.blit(score_blue,(WIDTH - 5*TILE_SIZE, 2*TILE_SIZE))
+        
+        score_red = font.render(str(data["pb"]["nb_killed"]), False, RED_FONT_COLOR)
+        score_red = pg.transform.scale(score_red, (3*TILE_SIZE, 3*TILE_SIZE))
+        self.win.blit(score_red,(2*TILE_SIZE, 2*TILE_SIZE))
+
 
         for soldier in data['pb']['soldiers']:
             self.render_soldier(soldier, BLUE_COLOR)
@@ -66,10 +76,11 @@ class GraphicEngine:
 
         if "bu" in data: 
             for bullet in data['bu']:
-                if bullet['color']:
-                    pg.draw.circle(self.win, BLUE_COLOR, bullet['pos'], 10)
-                else:
+                if bullet['color'] == "red":
                     pg.draw.circle(self.win, RED_COLOR, bullet['pos'], 10)
+                else:
+                    pg.draw.circle(self.win, BLUE_COLOR, bullet['pos'], 10)
+
 
 if __name__ == "__main__":
     fps = 60

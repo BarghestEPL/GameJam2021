@@ -19,8 +19,8 @@ red_sock, _ = srv.accept()
 print("red is connected")
 
 
-playerBlue = Player(blue_sock, True)
-playerRed = Player(red_sock, False)
+playerRed = Player(red_sock, True)
+playerBlue = Player(blue_sock, False)
 
 
 def run():
