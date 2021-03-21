@@ -107,6 +107,7 @@ class Soldier:
             for bullet in Bullet.bullets:
                 if bullet.collide(self.pos) and bullet.color != self.color:
                     self.alive = 0
+                    self.counting = 0
                     self.nb_killed += 1
                     self.dead = True
                     self.pos = self.respawn_pos

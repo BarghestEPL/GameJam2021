@@ -1,4 +1,4 @@
-SERVER_IP = "localhost"
+SERVER_IP = "109.88.29.134"
 
 TILE_SIZE = 32
 WIDTH = 1280

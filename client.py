@@ -24,7 +24,7 @@ screen = pg.display.set_mode((WIDTH, HEIGHT))
 
 # MULTIPLAYER
 ge = GraphicEngine(screen)
-HOST, PORT = SERVER_IP, 45759
+HOST, PORT = SERVER_IP, 45632
 srv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
