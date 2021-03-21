@@ -56,13 +56,16 @@ while time < START_DURATION:
         "bu": [bullet.get_state() for bullet in Bullet.bullets],
         "score_counting": score_counting,
         "time_remaining": ceil(START_DURATION-time),
-        "state": "start1"
+        "state": "start1",
+        "color": "RED"
     }
 
     test_blue = 3 if send_msg(player1.sock, data) else test_blue - 1
     if test_blue == 0:
         break
+    data["color"]: "BLUE"
     send_msg(player2.sock, data)
+    data["color"]: "RED"
     test_red = 3 if send_msg(player1.sock, data) else test_red - 1
     if test_red == 0:
         break
@@ -70,7 +73,7 @@ while time < START_DURATION:
 
 time = 0
 
-player2_score = score_counting
+player1_score = score_counting
 
 time = 0
 threading.Thread(target=run, daemon=True).start()
@@ -132,13 +135,17 @@ while time < END_DURATION:
         "bu": [bullet.get_state() for bullet in Bullet.bullets],
         "score_counting": score_counting,
         "time_remaining": floor(END_DURATION-time),
-        "state": "end1"
+        "state": "end1",
+        "color": "RED"
     }
 
     test_blue = 3 if send_msg(player1.sock, data) else test_blue - 1
     if test_blue == 0:
         break
+
+    data["color"] = "BLUE"
     send_msg(player2.sock, data)
+    data["color"] = "RED"
     test_red = 3 if send_msg(player1.sock, data) else test_red - 1
     if test_red == 0:
         break
@@ -170,13 +177,16 @@ while time < START_DURATION:
         "bu": [bullet.get_state() for bullet in Bullet.bullets],
         "score_counting": score_counting,
         "time_remaining": floor(START_DURATION-time),
-        "state": "start2"
+        "state": "start2",
+        "color": "BLUE"
     }
 
     test_blue = 3 if send_msg(player1.sock, data) else test_blue - 1
     if test_blue == 0:
         break
+    data["color"]: "RED"
     send_msg(player2.sock, data)
+    data["color"]: "BLUE"
     test_red = 3 if send_msg(player1.sock, data) else test_red - 1
     if test_red == 0:
         break
@@ -219,7 +229,7 @@ while time < GAME_DURATION:
 
     clock.tick(fps)
 
-player1_score = score_counting
+player2_score = score_counting
 
 time = 0
 while time < END_DURATION:
@@ -244,12 +254,14 @@ while time < END_DURATION:
         "bu": [bullet.get_state() for bullet in Bullet.bullets],
         "score_counting": score_counting,
         "time_remaining": floor(END_DURATION-time),
-        "state": "end2"
+        "state": "end2",
+        "color": "BLUE"
     }
 
     test_blue = 3 if send_msg(player1.sock, data) else test_blue - 1
     if test_blue == 0:
         break
+    data["color"]: "RED"
     send_msg(player2.sock, data)
     test_red = 3 if send_msg(player1.sock, data) else test_red - 1
     if test_red == 0:
@@ -285,7 +297,7 @@ while True:
         "score_counting": score_counting,
         "time_remaining": floor(GAME_DURATION-time),
         "state": "final",
-        "winner": winner
+        "winner": winner,
     }
 
     test_blue = 3 if send_msg(player1.sock, data) else test_blue - 1
