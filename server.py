@@ -19,39 +19,54 @@ red_sock, _ = srv.accept()
 print("red is connected")
 
 
-playerRed = Player(red_sock, True)
-playerBlue = Player(blue_sock, False)
+player1 = Player(red_sock, "red")
+player2 = Player(blue_sock, "blue")
 
 
 def run():
     while True:
-        playerBlue.update(dt)
+        player2.update(dt)
 
 
 test_blue = 3
 test_red = 3
 score_counting = 0
 
+time = 0
+
 threading.Thread(target=run, daemon=True).start()
 while True:
-    playerRed.update(dt)
+    time += dt
+
+    if time > GAME_DURATION:
+        pass
+
+    player1.update(dt)
     for bullet in Bullet.bullets:
         bullet.update(dt)
 
+    if player1.color == "blue":
+        playerBlue = player1
+        playerRed = player2
+    else:
+        playerBlue = player2
+        playerRed = player1
+    
     score_counting += sum([soldier.counting for soldier in playerBlue.soldiers])*dt
 
     data = {
         "pb": playerBlue.get_state(),
         "pr": playerRed.get_state(),
         "bu": [bullet.get_state() for bullet in Bullet.bullets],
-        "score_counting": score_counting
+        "score_counting": score_counting,
+        "time_remaining": GAME_DURATION-time
     }
 
-    test_blue = 3 if send_msg(playerRed.sock, data) else test_blue - 1
+    test_blue = 3 if send_msg(player1.sock, data) else test_blue - 1
     if test_blue == 0:
         break
-    send_msg(playerBlue.sock, data)
-    test_red = 3 if send_msg(playerRed.sock, data) else test_red - 1
+    send_msg(player2.sock, data)
+    test_red = 3 if send_msg(player1.sock, data) else test_red - 1
     if test_red == 0:
         break
     clock.tick(fps)

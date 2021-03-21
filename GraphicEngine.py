@@ -64,6 +64,9 @@ class GraphicEngine:
         score_counting = pg.transform.scale(score_counting, (5*TILE_SIZE, 5*TILE_SIZE))
         self.win.blit(score_counting, (7*TILE_SIZE, 13*TILE_SIZE))
 
+        time_remaining = font.render("TIME: " + str(int(data["time_remaining"])), False, TIME_COLOR)
+        time_remaining = pg.transform.scale(time_remaining, (3*TILE_SIZE, TILE_SIZE))
+        self.win.blit(time_remaining, (35*TILE_SIZE, 0))
 
         score_blue = font.render(str(data["pr"]["nb_killed"]), False, BLUE_FONT_COLOR)
         score_blue = pg.transform.scale(score_blue, (3*TILE_SIZE, 3*TILE_SIZE))

@@ -125,12 +125,9 @@ class Soldier:
 
 
 class Player:
-    def __init__(self, sock, first):
+    def __init__(self, sock, color):
         self.sock = sock
-        if first:
-            self.color = "red"
-        else:
-            self.color = "blue"
+        self.color = color
 
         if self.color == "red":
             self.soldiers = [
