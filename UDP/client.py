@@ -44,7 +44,7 @@ while True:
             left, _, right = pg.mouse.get_pressed(3)
 
     inputs = {
-        "m_pos": pg.mouse.get_pos(),
+        "pos": pg.mouse.get_pos(),
         "ml": left,
         "mr": right
     }
