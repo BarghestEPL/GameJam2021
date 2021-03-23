@@ -1,4 +1,3 @@
-import time
 import socket
 from proto import *
 import pygame as pg
@@ -6,7 +5,7 @@ from GameObjects.GameObject import *
 import threading
 from math import ceil
 
-HP = HOST, PORT = "", 45759
+HP = HOST, PORT = "", 45632
 srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 srv.bind(HP)
 srv.listen(5)
@@ -21,6 +20,7 @@ print("red is connected")
 
 player1 = Player(red_sock, "red")
 player2 = Player(blue_sock, "blue")
+
 
 def run():
     while True:
@@ -69,7 +69,6 @@ while time < START_DURATION:
     test_red = 3 if send_msg(player1.sock, data) else test_red - 1
     if test_red == 0:
         break
-    clock.tick(fps)
 
 time = 0
 
@@ -193,6 +192,7 @@ while time < START_DURATION:
     clock.tick(fps)
 
 time = 0
+score_counting = 0
 while time < GAME_DURATION:
     time += dt
     

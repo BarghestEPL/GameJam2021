@@ -88,7 +88,7 @@ class Loader:
 
     def render(self, win):
         self.update()
-        win.blit(self.image, (323, 210))
+        win.blit(self.image, (580, 310))
         pg.draw.line(win, self.color, self.a.pos(), self.b.pos(), 2)
         pg.draw.line(win, self.color, self.b.pos(), self.c.pos(), 2)
         pg.draw.line(win, self.color, self.c.pos(), self.d.pos(), 2)

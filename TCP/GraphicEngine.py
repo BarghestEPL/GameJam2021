@@ -2,6 +2,7 @@ import pygame as pg
 import numpy as np
 from const import *
 
+
 arena = np.array([
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 [1, 3, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 4, 4, 4, 4, 1],
@@ -38,7 +39,7 @@ class GraphicEngine:
         self.gun_width = GUN_WIDTH
 
     def render_soldier(self, soldier, color):
-        pos= pg.Vector2(soldier["pos"])
+        pos = pg.Vector2(soldier["pos"])
         if soldier["selected"]:
             pg.draw.circle(self.win, SELECTED_COLOR, pos, self.rad + 2)
         pg.draw.circle(self.win, color, pos, self.rad)
@@ -122,6 +123,3 @@ class GraphicEngine:
             else:
                 s = font.render("IT'S A DRAW!", False, TIME_COLOR)
             self.win.blit(s, (5*TILE_SIZE, int(HEIGHT/2)-2*TILE_SIZE))
-
-
-
