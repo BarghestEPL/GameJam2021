@@ -6,19 +6,21 @@ from GameObjects import *
 
 dt = 0
 run = 1
+safe_lock = threading.Lock()
 clock = pg.time.Clock()
 srv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-srv.bind(("", PORT))
+srv.bind(("", SRV_PORT))
 
 
 def handle_clients():
     while run:
-        data, addr = srv.recvfrom(DATA_LEN)
-        player = clients.get(addr)
-        if player:
-            player.set_inputs(json.loads(data.decode("utf-8")))
-        else:
-            clients[addr] = Player(addr, json.loads(data.decode("utf-8")))
+        data, addr = srv.recvfrom(256)
+        with safe_lock:
+            player = clients.get(addr)
+            if player:
+                player.set_inputs(json.loads(data.decode("utf-8")))
+            else:
+                clients[addr] = Player(addr, json.loads(data.decode("utf-8")))
 
 
 threading.Thread(target=handle_clients, daemon=True).start()
@@ -28,8 +30,10 @@ try:
             obj.update(dt)
 
         b = json.dumps([obj.get_state() for obj in gameObjects]).encode("utf-8")
-        for client in clients.keys():
-            srv.sendto(b, client)
+
+        with safe_lock:
+            for client in clients.keys():
+                srv.sendto(b, client)
         dt = clock.tick(128)
 except KeyboardInterrupt:
     run = False

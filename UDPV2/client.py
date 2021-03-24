@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import socket
@@ -17,13 +18,14 @@ dt = 0
 run = True
 ge = GraphicEngine(screen, font)
 srv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-srv.bind(("", PORT))
+
+if os.name == 'nt':
+    srv.bind(CLI_ADDRESS)
 
 
 def handle_srv():
     while run:
         data = srv.recv(DATA_LEN)
-        # data, addr = srv.recvfrom(DATA_LEN)
         ge.data = json.loads(data.decode("utf-8"))
 
 
@@ -48,5 +50,5 @@ while True:
     }
 
     ge.render(int(clock.get_fps()))
-    srv.sendto(json.dumps(inputs).encode("utf-8"), ADDRESS)
+    srv.sendto(json.dumps(inputs).encode("utf-8"), SRV_ADDRESS)
     dt = clock.tick(60)

@@ -45,6 +45,6 @@ class Player:
     def get_state(self):
         return {
             "type": PLAYER,
-            "pos": tuple(self.pos),
+            "pos": (int(self.pos.x), int(self.pos.y)),
             "color": tuple(self.color)
         }
