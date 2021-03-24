@@ -31,7 +31,7 @@ try:
         b = json.dumps([obj.get_state() for obj in gameObjects]).encode("utf-8")
         for client in clients.keys():
             srv.sendto(b, client)
-        dt = clock.tick(144)
+        dt = clock.tick(128)
 except KeyboardInterrupt:
     run = False
     srv.close()

@@ -25,7 +25,8 @@ def handle_srv():
         ge.data = json.loads(data.decode("utf-8"))
 
 
-threading.Thread(target=handle_srv, daemon=True).start()
+srv_th = threading.Thread(target=handle_srv)
+srv_th.start()
 while True:
     left, _, right = False, False, False
     for event in pg.event.get():
@@ -33,6 +34,7 @@ while True:
             run = False
             srv.close()
             pg.quit()
+            srv_th.join()
             sys.exit()
         if event.type == pg.MOUSEBUTTONDOWN:
             left, _, right = pg.mouse.get_pressed(3)

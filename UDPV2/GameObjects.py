@@ -9,6 +9,7 @@ gameObjects = []
 class Player:
     def __init__(self, inputs):
         gameObjects.append(self)
+        self.timeout =
         self.inputs = inputs
         self.pos = pg.Vector2(400, 300)
         self.color = pg.color.Color(
@@ -21,13 +22,21 @@ class Player:
         self.move_at = self.pos
         self.step = pg.Vector2(0, 0)
 
-    def update(self, dt):
-        if self.inputs["ml"]:
-            self.move_at = pg.Vector2(self.inputs["pos"])
-            self.step = (self.move_at - self.pos + pg.Vector2(0.01, 0.01)).normalize() * self.speed
+    def set_inputs(self, inputs):
+        self.inputs = inputs
+        self.timeout = TIMEOUT_MAX
 
-        if self.pos.distance_to(self.move_at) > 10:
-            self.pos += self.step * dt
+    def update(self, dt):
+        if self.timeout > 0:
+            if self.inputs["ml"]:
+                self.move_at = pg.Vector2(self.inputs["pos"])
+                self.step = (self.move_at - self.pos + pg.Vector2(0.01, 0.01)).normalize() * self.speed
+
+            if self.pos.distance_to(self.move_at) > 10:
+                self.pos += self.step * dt
+            self.timeout -= 1
+        else:
+            gameObjects.remove(self)
 
     def get_state(self):
         return {
