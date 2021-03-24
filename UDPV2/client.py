@@ -25,8 +25,9 @@ def handle_srv():
         ge.data = json.loads(data.decode("utf-8"))
 
 
-srv_th = threading.Thread(target=handle_srv)
+srv_th = threading.Thread(target=handle_srv, args=())
 srv_th.start()
+
 while True:
     left, _, right = False, False, False
     for event in pg.event.get():
