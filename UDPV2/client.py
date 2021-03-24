@@ -17,17 +17,18 @@ dt = 0
 run = True
 ge = GraphicEngine(screen, font)
 srv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+srv.bind(("", PORT))
 
 
 def handle_srv():
     while run:
-        data, addr = srv.recvfrom(DATA_LEN)
+        data = srv.recv(DATA_LEN)
+        # data, addr = srv.recvfrom(DATA_LEN)
         ge.data = json.loads(data.decode("utf-8"))
 
 
-srv_th = threading.Thread(target=handle_srv, args=())
+srv_th = threading.Thread(target=handle_srv)
 srv_th.start()
-
 while True:
     left, _, right = False, False, False
     for event in pg.event.get():
