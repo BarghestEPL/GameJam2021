@@ -20,7 +20,7 @@ ge = GraphicEngine(screen, font)
 srv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 if os.name == 'nt':
-    srv.bind(CLI_ADDRESS)
+    srv.bind(("", 45632))
 
 
 def handle_srv():
