@@ -16,6 +16,7 @@ class GraphicEngine:
         for obj in self.data:
             if obj["type"] == PLAYER:
                 self.render_player(obj)
+
         text = self.font.render(str(fps), True, (255, 255, 25))
         self.win.blit(text, (10, 10))
         pg.display.flip()

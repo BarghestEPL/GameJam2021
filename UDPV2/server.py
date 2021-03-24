@@ -9,7 +9,7 @@ run = 1
 clients = {}
 clock = pg.time.Clock()
 srv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-srv.bind(ADDRESS)
+srv.bind(("", PORT))
 
 
 def handle_clients():
